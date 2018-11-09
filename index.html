@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <p>
+      We are using node <script>document.write(process.versions.node)</script>,
+      Chrome <script>document.write(process.versions.chrome)</script>,
+      and Electron <script>document.write(process.versions.electron)</script>.
+    </p>
+    <div id="msg-container" style="height: 200px; overflow-y: scroll;">
+      
+    </div>
+    <p>
+      <input type="text" name="msg" value="" id="msg" autofocus="true">
+      <!-- <textarea type="text" name="msg" value="" id="msg" autofocus="true"></textarea> -->
+      <input type="submit" id="submit">
+    </p>
+    <script type="text/javascript">
+
+      const ipc = require('electron').ipcRenderer;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('ready')
+
+        const msgContainer = document.getElementById('msg-container')
+        const msgInput = document.getElementById('msg')
+        const submitBtn = document.getElementById('submit')
+
+        msgInput.focus()
+
+        submitBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          sendMsg()
+        })
+
+        msgInput.addEventListener("keyup", function(event) {
+          event.preventDefault();
+          if (event.keyCode === 13) {
+            sendMsg()
+          }
+        });
+
+
+        ipc.on('receivedMsg', function(event, response){
+            console.log(response)
+            var p = document.createElement('p');
+            p.className = "message";
+            p.innerHTML = response;
+
+            msgContainer.appendChild(p)
+            msgContainer.scrollTop = msgContainer.scrollHeight
+        })
+
+        function sendMsg() 
+        {
+          console.log(msgInput.value)
+          if (msgInput.value) {
+            ipc.send('broadcastMsg', msgInput.value);
+            msgInput.value = null
+          }
+        }
+      })
+
+    </script>
+  </body>
+</html>
