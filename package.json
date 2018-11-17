@@ -1,11 +1,11 @@
 {
-	"name": "chat",
+	"name": "local-network-chat-on-electron",
 	"version": "1.0.0",
 	"description": "chat description ...",
-	"main": "index.js",
+	"main": "main.js",
 	"scripts": {
 		"start": "electron ."
 	},
 	"author": "",
-	"license": "ISC"
+	"license": "GPLv3"
 }
