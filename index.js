@@ -96,9 +96,9 @@ const Main = new class
 
 	sendMessage(event, message)
 	{
-		message = Buffer.from(message).toString('base64');
-		server.send(message, 0, message.length, PORT, MULTICAST_ADDR, () => {
-			console.log('server.send::'+message);
+		var buffer = Buffer.from(message);
+		server.send(buffer, PORT, MULTICAST_ADDR, () => {
+			console.log('server.send::'+buffer);
 		});
 	}
 
@@ -160,7 +160,6 @@ app.on('activate', () => {
 
 
 var PORT = 6024;
-// var MULTICAST_ADDR = '192.168.1.255';
 var MULTICAST_ADDR = '255.255.255.255';
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
@@ -174,17 +173,10 @@ server.on('listening', function () {
 });
 
 // Приходящие сообщения
-server.on('message', function (message, info) {
-	//   message = Buffer.from(message, 'base64').toString('utf-8')
-	//   message = Buffer.from(message, 'base64').toString('utf-8')
-	//   console.log(message)
-	//   console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + message);
-  console.log(info);
-  message = Buffer.from(message, 'base64').toString('utf-8');
-  message = Buffer.from(message, 'base64').toString('utf-8');
+server.on('message', function (buffer, info) {
   var data = {
-	from: info.address == Server.getLocalAddress() ? false : true,
-	message: message
+	from: info.address !== Server.getLocalAddress(),
+	message: buffer.toString()
   };
   Main.mainWindow.webContents.send('broadcast-receive-message', data);
 });
