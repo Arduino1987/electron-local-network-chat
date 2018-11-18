@@ -1,6 +1,6 @@
 'use strict';
 
-class Index
+class Server
 {
     constructor()
     {
@@ -42,4 +42,4 @@ class Index
     }
 }
 
-module.exports = new Index();
+module.exports = new Server();

@@ -1,7 +1,7 @@
 'use strict';
 
 const electron = require('electron');
-const Application = require('./Application');
+const Application = require('./modules/application');
 let application;
 
 try {
