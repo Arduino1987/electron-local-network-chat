@@ -7,7 +7,7 @@ class Application
         // Dependencies
         this.electron = require('electron');
         this.server = require('./Server');
-        this.osInfo = require('./OsInfo');
+        this.osInfo = require('./modules/os_info');
         this.path = require('path');
 
         // Properties
