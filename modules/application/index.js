@@ -6,8 +6,8 @@ class Application
     {
         // Dependencies
         this.electron = require('electron');
-        this.server = require('./modules/server');
-        this.osInfo = require('./modules/os_info');
+        this.server = require('../server');
+        this.osInfo = require('../os_info');
         this.path = require('path');
 
         // Properties
@@ -44,7 +44,7 @@ class Application
         });
 
         // and load the index.html of the app.
-        this.mainWindow.loadFile('index.html');
+        this.mainWindow.loadFile(this.path.join(__dirname, '/index.html'));
 
         // Emitted when the window is closed.
         this.mainWindow.on('closed', () => {
