@@ -2,7 +2,7 @@
 
 class Application
 {
-    constructor()
+    constructor(pathToIndex)
     {
         // Dependencies
         this.electron = require('electron');
@@ -11,6 +11,7 @@ class Application
         this.path = require('path');
 
         // Properties
+        this.pathToIndex = pathToIndex;
         this.mainWindow = null;
         this.mainTray = null;
     }
@@ -44,7 +45,7 @@ class Application
         });
 
         // and load the index.html of the app.
-        this.mainWindow.loadFile(this.path.join(__dirname, '/index.html'));
+        this.mainWindow.loadFile(this.pathToIndex);
 
         // Emitted when the window is closed.
         this.mainWindow.on('closed', () => {
