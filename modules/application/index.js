@@ -14,6 +14,14 @@ class Application
         this.pathToIndex = pathToIndex;
         this.mainWindow = null;
         this.mainTray = null;
+        this.defaultWindowSize = {
+            width: 1024,
+            height: 768
+        }
+        this.minimumWindowSize = {
+            width: 460,
+            height: 660
+        }
     }
 
     /**
@@ -38,10 +46,12 @@ class Application
         }
 
         this.mainWindow = new this.electron.BrowserWindow({
-            width: 1024,
-            height: 768,
+            width: this.defaultWindowSize.width,
+            height: this.defaultWindowSize.height,
             icon: this.path.join(__dirname, '/icons/app.png'),
-            title: 'Chat Messenger'
+            title: 'Chat Messenger',
+            minWidth: this.minimumWindowSize.width,
+            minHeight: this.minimumWindowSize.height,
         });
 
         // and load the index.html of the app.
@@ -71,7 +81,11 @@ class Application
             {
                 label: 'Show Chat',
                 click: () => {
-                    this.mainWindow.show();
+                    // this.mainWindow.show();
+                    let window = this.mainWindow;
+                    if (window) {
+                        this.showAndFocus();
+                    }
                 }
             },
             {
@@ -146,6 +160,30 @@ class Application
             this._createWindow();
             this._createTray();
         });
+    }
+
+    /**
+     * Check window state.
+     *
+     * @returns boolean
+     */
+    hasValidWindow() {
+        return this.mainWindow && !this.mainWindow.isDestroyed();
+    }
+
+    /**
+     * Show window.
+     */
+    showAndFocus() {
+        if (!this.hasValidWindow()) {
+            return;
+        }
+        if (this.mainWindow.isMinimized()) {
+            this.mainWindow.restore();
+        }
+        this.mainWindow.show();
+        this.mainWindow.focus();
+        this.mainWindow.setMinimumSize(this.minimumWindowSize.width, this.minimumWindowSize.height);
     }
 }
 

@@ -25,7 +25,7 @@ class Server
     send(buffer)
     {
         this.socket.send(buffer, this.PORT, this.MULTICAST_ADDR, () => {
-            console.log('socket.send::'+buffer);
+            console.log('socket.send: '+buffer);
         });
     }
 
